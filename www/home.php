@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>Metube</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <style>
 table, th, td {
@@ -19,8 +20,15 @@ table, th, td {
     $query = 'SELECT * FROM filelocation ORDER BY fileid DESC';
     $result = mysqli_query($link, $query) or die("Query error: ".mysqli_error($link)."\n");
 
-    echo"<table>\n
-    <tr>
+    echo "<FORM action='search.php' method='get'>
+        <P>
+            <INPUT type='submit' value='Search by Keyword'>
+        </P>
+        </FORM>";
+
+
+    echo"<table class='table w-75'>\n
+    <tr class='table-dark'>
         <th>userid</th>
         <th>fileid</th>
         <th>filename</th>

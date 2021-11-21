@@ -14,7 +14,8 @@ table, th, td {
         session_start();
         $email = $_SESSION["email"];
         $uId = -1;
-        $playlistId = $_GET['id'];
+        $fileId = $_GET['fileId'];
+        $_SESSION["fileId"] = $fileId;
 
         //connecting, selecting database
         $link = mysqli_connect('mysql1.cs.clemson.edu', 'metube_bbec_eqrn', 'metubepass89', 'metube_bbec') 
@@ -22,7 +23,7 @@ table, th, td {
 
         //Get UserId
         $query = "SELECT * from user WHERE email = '$email'";
-        $result = mysqli_query($link, $query) or die("3Query error: " . mysqli_error($link)."\n");
+        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){
             echo "Account error";
             header("Location: wrongInfo.php");
@@ -33,29 +34,7 @@ table, th, td {
             } 
         }
 
-
-        $query = "SELECT * from playlist WHERE playlistId = '$playlistId'";
-        $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
-        if(mysqli_num_rows($result) == 0){
-            echo "This playlist does not exist.";
-        }  
-
-        $row = mysqli_fetch_assoc($result);
-        $listName = $row["listName"];
-        $listDesc = $row["playlistDesc"];
-
-
-        //want playlist to give information about files on it.
-        echo"<table class='table w-50'>\n
-        <tr class='table-dark'>
-            <th>Playlist Name</th>
-            <th>Playlist Description</th></tr>
-        <tr class='table-secondary'>
-            <th>$listName</th>
-            <th>$listDesc</th></tr>
-            </table>";
-
-        $query = "SELECT displayName, fileUrl, fileDesc, category, filelocation.fileId FROM filelocation INNER JOIN fileList ON filelocation.fileId = fileList.fileId WHERE playlistId = '$playlistId'";            
+        $query = "SELECT displayName, fileUrl, fileDesc, category, fileId FROM filelocation WHERE fileId = '$fileId'";            
         $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
 
         echo"<table class='table w-50'>\n
@@ -63,8 +42,7 @@ table, th, td {
             <th>File Name</th>
             <th>File URL</th>
             <th>Description</th>
-            <th>Category</th>
-            <th>Remove from List</th></tr>";
+            <th>Category</th></tr>";
 
 
         $fileId = 0;
@@ -77,19 +55,31 @@ table, th, td {
                     echo"\t\t<td>$col_value</td>\n";
                 }
             }
-            echo"<td>";
-            echo "<a href=removeFileFromList.php?id=$playlistId&fileId=$fileId class='btn btn-secondary'>Remove From Playlist</a>";
-            echo "</td>";
             echo "\t</tr>\n";
         }
         echo"</table>\n";
 
+
+
+
+        echo "<FORM action='checkKeyword.php' method='GET'>
+            <P>
+            <div class='mb-3'>
+                <label for='keyword' class='form-label'>Keyword:</label>
+                    <input type='text' class='form-control w-25' id='keyword' name='keyword'>
+                <input type='submit' class='btn btn-primary' value='Add Keyword'>
+            </div>
+            </P>
+            </FORM>";
+
     ?>
 
-    <FORM action="userpage.php" method="get">
+
+<FORM action="userpage.php" method="get">
         <P>
             <INPUT type="submit" value="Go to My Page">
         </P>
-    </FORM>
+</FORM>
 
 </html>
+

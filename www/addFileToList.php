@@ -34,13 +34,6 @@ table, th, td {
             } 
         }
 
-        $query = "SELECT * from filelocation WHERE fileId='$fileId'";
-        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
-        if(mysqli_num_rows($result) == 0){
-            echo "File Retrieval Error";
-        }
-
-
         $query = "SELECT * from filelocation WHERE fileId = '$fileId'";
         $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){

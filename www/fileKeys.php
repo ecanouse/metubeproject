@@ -14,7 +14,7 @@ table, th, td {
         session_start();
         $email = $_SESSION["email"];
         $uId = -1;
-        $playlistId = $_GET['id'];
+        $fileId = $_GET['fileId'];
 
         //connecting, selecting database
         $link = mysqli_connect('mysql1.cs.clemson.edu', 'metube_bbec_eqrn', 'metubepass89', 'metube_bbec') 
@@ -34,28 +34,8 @@ table, th, td {
         }
 
 
-        $query = "SELECT * from playlist WHERE playlistId = '$playlistId'";
-        $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
-        if(mysqli_num_rows($result) == 0){
-            echo "This playlist does not exist.";
-        }  
 
-        $row = mysqli_fetch_assoc($result);
-        $listName = $row["listName"];
-        $listDesc = $row["playlistDesc"];
-
-
-        //want playlist to give information about files on it.
-        echo"<table class='table w-50'>\n
-        <tr class='table-dark'>
-            <th>Playlist Name</th>
-            <th>Playlist Description</th></tr>
-        <tr class='table-secondary'>
-            <th>$listName</th>
-            <th>$listDesc</th></tr>
-            </table>";
-
-        $query = "SELECT displayName, fileUrl, fileDesc, category, filelocation.fileId FROM filelocation INNER JOIN fileList ON filelocation.fileId = fileList.fileId WHERE playlistId = '$playlistId'";            
+        $query = "SELECT displayName, fileUrl, fileDesc, category, fileId FROM filelocation WHERE fileId = '$fileId'";            
         $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
 
         echo"<table class='table w-50'>\n
@@ -64,7 +44,7 @@ table, th, td {
             <th>File URL</th>
             <th>Description</th>
             <th>Category</th>
-            <th>Remove from List</th></tr>";
+            <th>Add a Keyword</th></tr>";
 
 
         $fileId = 0;
@@ -78,11 +58,33 @@ table, th, td {
                 }
             }
             echo"<td>";
-            echo "<a href=removeFileFromList.php?id=$playlistId&fileId=$fileId class='btn btn-secondary'>Remove From Playlist</a>";
+            echo "<a href=addKeyword.php?fileId=$fileId class='btn btn-secondary'>Add a Keyword</a>";
             echo "</td>";
             echo "\t</tr>\n";
         }
         echo"</table>\n";
+
+        echo"<table class='table w-50'>\n
+        <tr class='table-dark'>
+            <th>Keyword</th>
+            <th>Remove Keyword</th></tr>";
+
+        $query = "SELECT keyword from keywordList WHERE fileId='$fileId'";
+        $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
+
+        $keyword = "";
+        while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            echo "\t<tr>\n";
+            foreach($line as $col_value){
+                $keyword = $col_value;
+                echo"\t\t<td>$col_value</td>\n";
+            }
+            echo"<td>";
+            echo "<a href=removeKeyword.php?keyword=$keyword&fileId=$fileId class='btn btn-secondary'>Remove</a>";
+            echo "</td>";
+            echo "\t</tr>\n";
+        }
+        echo "</table>";
 
     ?>
 
