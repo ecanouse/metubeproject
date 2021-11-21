@@ -21,7 +21,7 @@ table, th, td {
 
         //Get UserId
         $query = "SELECT * from user WHERE email = '$email'";
-        $result = mysqli_query($link, $query) or die("3Query error: " . mysqli_error($link)."\n");
+        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){
             echo "Account error";
             header("Location: wrongInfo.php");
@@ -33,7 +33,7 @@ table, th, td {
         }
 
         $query = "SELECT playlistId, listName, playlistDesc from playlist WHERE userId = '$uId'";
-        $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
+        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){
             echo "You have no playlists.<br>";
         }  
@@ -47,6 +47,7 @@ table, th, td {
         <tr class='table-dark'>
             <th>Playlist Name</th>
             <th>Playlist Description</th>
+            <th>View Playlist</th>
             <th>Rename Playlist</th>
             <th>Remove Playlist</th></tr>";
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
@@ -58,6 +59,9 @@ table, th, td {
                     echo"\t\t<td>$col_value</td>\n";
                 }
             }
+            echo"<td>";
+            echo "<a href=viewList.php?id=$playlistId class='btn btn-secondary'>View Playlist</a>";
+            echo"</td>";
             echo"<td>";
             echo "<a href=renameList.php?id=$playlistId class='btn btn-secondary'>Rename Playlist</a>";
             echo"</td>";

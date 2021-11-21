@@ -38,20 +38,24 @@ table, th, td {
         $query = "SELECT * FROM filelocation WHERE userId = '$uId' ORDER BY fileid DESC";
         $result = mysqli_query($link, $query) or die("Query error: ".mysqli_error($link)."\n");
 
-        echo"<table class='table w-50'>\n
+        echo"<table class='table w-75'>\n
         <tr class='table-dark'>
             <th>userid</th>
             <th>fileid</th>
             <th>filename</th>
             <th>filelink</th>
             <th>description</th>
-            <th>category</th>";
+            <th>category</th>
+            <th>Keywords</th></tr>";
 
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             echo "\t<tr>\n";
             foreach($line as $col_value){
                 echo"\t\t<td>$col_value</td>\n";
             }
+            echo"<td>";
+            echo "<a href=contactUploads.php?id=$col_value class='btn btn-secondary'>View Keywords</a>";
+            echo "</td>";
             echo "\t</tr>\n";
         }
         echo"</table>\n";

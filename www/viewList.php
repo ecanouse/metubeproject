@@ -33,7 +33,6 @@ table, th, td {
             } 
         }
 
-        echo "<h3>File was removed from Playlist</h3><br>";
 
         $query = "SELECT * from playlist WHERE playlistId = '$playlistId'";
         $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
@@ -47,7 +46,6 @@ table, th, td {
 
 
         //want playlist to give information about files on it.
-        echo "<h4>Updated Playlist</h4>";
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
             <th>Playlist Name</th>
