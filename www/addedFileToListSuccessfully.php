@@ -34,13 +34,7 @@ table, th, td {
             } 
         }
 
-        //TODO: ADD FILE TO LIST
-        $query = "INSERT INTO fileList VALUES ('$fileId', '$playlistId')";
-        $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
-
-
-
-        echo "<h6>File was added to Playlist</h3>";
+        echo "<h3>File was added to Playlist</h3><br>";
 
         $query = "SELECT * from playlist WHERE playlistId = '$playlistId'";
         $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
@@ -54,7 +48,7 @@ table, th, td {
 
 
         //want playlist to give information about files on it.
-        echo "<h2>Updated Playlist</h2><br>";
+        echo "<h4>Updated Playlist</h4>";
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
             <th>Playlist Name</th>
@@ -64,7 +58,7 @@ table, th, td {
             <th>$listDesc</th></tr>
             </table>";
 
-        $query = "SELECT displayName, fileUrl, fileDesc, category FROM filelocation INNER JOIN fileList ON filelocation.fileId = fileList.fileId WHERE playlistId = '$playlistId'";            
+        $query = "SELECT displayName, fileUrl, fileDesc, category, filelocation.fileId FROM filelocation INNER JOIN fileList ON filelocation.fileId = fileList.fileId WHERE playlistId = '$playlistId'";            
         $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
 
         echo"<table class='table w-50'>\n
@@ -72,15 +66,23 @@ table, th, td {
             <th>File Name</th>
             <th>File URL</th>
             <th>Description</th>
-            <th>Category</th></tr>";
+            <th>Category</th>
+            <th>Remove from List</tr>";
 
 
+        $fileId = 0;
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             echo "\t<tr>\n";
             foreach($line as $col_value){
-                echo"\t\t<td>$col_value</td>\n";
+                if($col_value == $line["fileId"]){
+                    $fileId=$col_value;
+                }else{
+                    echo"\t\t<td>$col_value</td>\n";
+                }
             }
-
+            echo"<td>";
+            echo "<a href=removeFileFromList.php?id=$playlistId&fileId=$fileId class='btn btn-secondary'>Remove From Playlist</a>";
+            echo "</td>";
             echo "\t</tr>\n";
         }
         echo"</table>\n";

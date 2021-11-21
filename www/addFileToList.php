@@ -96,7 +96,7 @@ table, th, td {
                 echo"\t\t<td>$col_value</td>\n";
             }
             echo"<td>";
-            echo "<a href=addedFileToListSuccessfully.php?id=$playlistId&fileId=$fileId class='btn btn-secondary'>Add to Playlist</a>";
+            echo "<a href=checkFileToList.php?id=$playlistId&fileId=$fileId class='btn btn-secondary'>Add to Playlist</a>";
             echo "</td>";
             echo "\t</tr>\n";
         }

@@ -34,6 +34,22 @@
         }
     }
 
+        //get user id
+        $query = "SELECT * from user WHERE email = '$email' ";
+        $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
+        if(mysqli_num_rows($result) == 0){
+            header("Location: wrongInfo.php");
+        }else{
+            while($row = mysqli_fetch_assoc($result)){
+                $uId = $row["userId"];
+
+            }
+        }
+
+    $query = "INSERT INTO playlist (userId, listName, playlistDesc) VALUES ('$uId', 'Favorites', 'Keep your favorite Files Here!')";
+    $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
+
+
 ?>
 <FORM action="userpage.php" method="GET">
     <P>

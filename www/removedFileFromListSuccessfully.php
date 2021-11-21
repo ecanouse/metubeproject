@@ -14,6 +14,8 @@ table, th, td {
         session_start();
         $email = $_SESSION["email"];
         $uId = -1;
+        //$fileId = $_GET['fileId'];
+        $playlistId = $_GET['id'];
 
         //connecting, selecting database
         $link = mysqli_connect('mysql1.cs.clemson.edu', 'metube_bbec_eqrn', 'metubepass89', 'metube_bbec') 
@@ -32,51 +34,65 @@ table, th, td {
             } 
         }
 
-        $query = "SELECT playlistId, listName, playlistDesc from playlist WHERE userId = '$uId'";
+        echo "<h3>File was removed from Playlist</h3><br>";
+
+        $query = "SELECT * from playlist WHERE playlistId = '$playlistId'";
         $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){
-            echo "You have no playlists.<br>";
+            echo "This playlist does not exist.";
         }  
 
-
+        $row = mysqli_fetch_assoc($result);
+        $listName = $row["listName"];
+        $listDesc = $row["playlistDesc"];
 
 
         //want playlist to give information about files on it.
-        echo "<h4>Playlists</h4>";
+        echo "<h4>Updated Playlist</h4>";
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
             <th>Playlist Name</th>
-            <th>Playlist Description</th>
-            <th>Rename Playlist</th>
-            <th>Remove Playlist</th></tr>";
+            <th>Playlist Description</th></tr>
+        <tr class='table-secondary'>
+            <th>$listName</th>
+            <th>$listDesc</th></tr>
+            </table>";
+
+        $query = "SELECT displayName, fileUrl, fileDesc, category, filelocation.fileId FROM filelocation INNER JOIN fileList ON filelocation.fileId = fileList.fileId WHERE playlistId = '$playlistId'";            
+        $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
+
+        echo"<table class='table w-50'>\n
+        <tr class='table-dark'>
+            <th>File Name</th>
+            <th>File URL</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Remove from List</tr>";
+
+
+        $fileId = 0;
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             echo "\t<tr>\n";
             foreach($line as $col_value){
-                if($col_value == $line["playlistId"]){
-                    $playlistId=$col_value;
+                if($col_value == $line["fileId"]){
+                    $fileId=$col_value;
                 }else{
                     echo"\t\t<td>$col_value</td>\n";
                 }
             }
             echo"<td>";
-            echo "<a href=renameList.php?id=$playlistId class='btn btn-secondary'>Rename Playlist</a>";
-            echo"</td>";
-            echo"<td>";
-            echo "<a href=removeList.php?id=$playlistId class='btn btn-secondary'>Remove Playlist</a>";
-            echo"</td>";
-            echo"\t</tr>\n";
+            echo "<a href=removeFileFromList.php?id=$playlistId&fileId=$fileId class='btn btn-secondary'>Remove From Playlist</a>";
+            echo "</td>";
+            echo "\t</tr>\n";
         }
-        echo "</table>";
-?>
-<FORM action="addPlaylist.php" method="get">
-    <P>
-        <INPUT type="submit" value="Add a Playlist">
-    </P>
-</FORM>
-<FORM action="userpage.php" method="get">
-    <P>
-        <INPUT type="submit" value="Go to My Page">
-    </P>
-</FORM>
+        echo"</table>\n";
+
+    ?>
+
+    <FORM action="userpage.php" method="get">
+        <P>
+            <INPUT type="submit" value="Go to My Page">
+        </P>
+    </FORM>
 
 </html>
