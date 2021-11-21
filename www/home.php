@@ -47,6 +47,21 @@ table, th, td {
 
 ?>
 
+<FORM action='browseCategory.php' method='get'>
+    <P>
+    <LABEL for="category">Browse by Category: </LABEL>
+        <select class="form-select w-25" name="category" id="category">
+            <option value="humor">Humor</option>
+            <option value="educational">Educational</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="news">News</option>
+            <option value="sports">Sports</option>
+        </select>   
+    <INPUT type="submit" value="Browse">
+    </P>
+</FORM>
+
+
 <FORM action="userpage.php" method="get">
     <P>
         <INPUT type="submit" value="Go to My Page">

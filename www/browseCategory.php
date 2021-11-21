@@ -14,7 +14,7 @@ table, th, td {
         session_start();
         $email = $_SESSION["email"];
         $uId = -1;
-        $keyword = $_GET["keyword"];
+        $category = $_GET["category"];
 
         //connecting, selecting database
         $link = mysqli_connect('mysql1.cs.clemson.edu', 'metube_bbec_eqrn', 'metubepass89', 'metube_bbec') 
@@ -36,8 +36,7 @@ table, th, td {
 
         $query = "SELECT displayName, fileUrl, fileDesc, category, filelocation.fileId 
         FROM filelocation 
-        INNER JOIN keywordList ON filelocation.fileId = keywordList.fileId 
-        WHERE keyword = '$keyword'";            
+        WHERE category = '$category'";            
         $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
 
         echo"<table class='table w-50'>\n
@@ -67,16 +66,6 @@ table, th, td {
     ?>
 
 
-<FORM action='searchKey.php' method='GET'>
-    <P>
-    <div class='mb-3'>
-        <label for='keyword' class='form-label'>Keyword:</label>
-            <input type='text' class='form-control w-25' id='keyword' name='keyword'>
-        <input type='submit' class='btn btn-primary' value='Search'>
-    </div>
-    </P>
-</FORM>
-
 <FORM action='browseCategory.php' method='get'>
     <P>
     <LABEL for="category">Browse by Category: </LABEL>
@@ -88,6 +77,16 @@ table, th, td {
             <option value="sports">Sports</option>
         </select>   
     <INPUT type="submit" value="Browse">
+    </P>
+</FORM>
+
+<FORM action='searchKey.php' method='GET'>
+    <P>
+    <div class='mb-3'>
+        <label for='keyword' class='form-label'>Keyword:</label>
+            <input type='text' class='form-control w-25' id='keyword' name='keyword'>
+        <input type='submit' class='btn btn-primary' value='Search'>
+    </div>
     </P>
 </FORM>
 
