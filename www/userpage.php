@@ -52,10 +52,13 @@ table, th, td {
             foreach($line as $col_value){
                 if($line["fileId"] == $col_value){
                     $fileId=$col_value;
+                }elseif($line["fileUrl"] == $col_value){
+                    echo"\t\t<td><img style='height:100px;width:100px;' src='$col_value'/></td>\n";
                 }elseif($line["userId"] != $col_value){
                     echo"\t\t<td>$col_value</td>\n";
                 }
             }
+
             echo"<td>";
             echo "<a href=fileKeys.php?fileId=$fileId class='btn btn-secondary'>View Keywords</a>";
             echo "</td>";
@@ -84,6 +87,7 @@ table, th, td {
     <FORM action="userPlaylists.php" method="GET">
     <P>
         <INPUT type="submit" value="View My Playlists" class="btn btn-info text-white">
+        <INPUT type="submit" value="View my Inbox" formaction="inbox.php" class="btn btn-info text-white">
     </P>
     </FORM>
 

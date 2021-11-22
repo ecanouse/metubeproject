@@ -7,7 +7,6 @@
         session_start();
         $email = $_SESSION["email"];
         $dname = $_REQUEST["dname"];
-        $furl = $_REQUEST["furl"];
         $desc = $_REQUEST["desc"];
         $category = $_REQUEST["category"];
         $uId = -1;
@@ -30,16 +29,28 @@
 
 
         if($uId != -1){
-            $query = "INSERT INTO filelocation (userId, displayName, fileUrl, fileDesc, category) VALUES ('$uId', '$dname', '$furl', '$desc', '$category')";
-            $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
-            $query = "SELECT * from filelocation WHERE fileUrl = '$furl'";
+            $query = "INSERT INTO filedata (numViews, numRatings, size) VALUES (0, 0, 1)";
+            $result = mysqli_query($link, $query) or die("4Query error: " . mysqli_error($link)."\n");
+            $query = "SELECT * from filedata ORDER BY timeUploaded DESC LIMIT 1";
             $result = mysqli_query($link, $query) or die("3Query error: " . mysqli_error($link)."\n");
             $fileId = -1;
             while($row = mysqli_fetch_assoc($result)){
                 $fileId = $row["fileId"];
             }
-            $query = "INSERT INTO filedata (fileId, numViews, numRatings, size) VALUES ('$fileId', 0, 0, 1)";
-            $result = mysqli_query($link, $query) or die("4Query error: " . mysqli_error($link)."\n");
+
+            $fileName = $_FILES['uploadFile']['name'];
+            $fileName =  'id'.$fileId.'id'.$fileName;
+            $temporal = $_FILES['uploadFile']['tmp_name']; 
+            $folder = './uploads'; 
+
+            $path = $folder . '/'. $fileName;
+            move_uploaded_file($temporal, $folder . '/' . $fileName);
+
+
+            $query = "INSERT INTO filelocation (fileId, userId, displayName, fileUrl, fileDesc, category) 
+                VALUES ('$fileId','$uId', '$dname', '$path', '$desc', '$category')";
+            $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
+
 
             header("Location: uploadSuccessful.php");
         }else{
@@ -54,3 +65,7 @@
 </FORM>
 
 </html>
+
+
+
+

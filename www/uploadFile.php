@@ -5,12 +5,12 @@
 
 </head>
 
-<FORM action="checkFile.php" method="get">
+<FORM action="checkFile.php" method="post" enctype="multipart/form-data">
     <P>
         <LABEL for="dname">Display Name: </LABEL>
             <INPUT type="text" id="dname" name="dname"><BR>
             <div class="input-group mb-3 w-25">
-                <input type="file" class="form-control" id="inputGroupFile01">
+                <input type="file" class="form-control" id="uploadFile" name="uploadFile">
             </div>
         <LABEL for="desc">Description: </LABEL>
             <INPUT type="text" id="desc" name="desc"><BR>
