@@ -6,8 +6,8 @@
     <?php
         session_start();
         $email = $_SESSION["email"];
-        $cemail = $_REQUEST["cemail"];
-        $cId = -1;
+        $cId = $_GET["id"];
+        $cemail = "";
         $uId = -1;
 
         //connecting, selecting database
@@ -16,16 +16,16 @@
         or die('Could not connect: ' . mysqli_error($link));
 
 
-        $query = "SELECT * from user WHERE email = '$cemail' ";
+        $query = "SELECT * from user WHERE userId = '$cId' ";
         $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){
-            echo "No user with that email exists";
+            echo "This user does not exists";
             header("Location: wrongContact.php");
             //want to send them back to home page
         }
         else{
             while($row = mysqli_fetch_assoc($result)){
-                $cId = $row["userId"];
+                $cemail = $row["email"];
             }
         }
 

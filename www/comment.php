@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Add to Playlist</title>
+<title>Send a Message</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
@@ -14,8 +14,8 @@ table, th, td {
         session_start();
         $email = $_SESSION["email"];
         $uId = -1;
-        $fileId = $_SESSION["fileId"];
-        $keyword = strtolower($_GET["keyword"]);
+        $commentText = $_REQUEST["commentText"];
+        $fileId = $_SESSION["file"];
 
         //connecting, selecting database
         $link = mysqli_connect('mysql1.cs.clemson.edu', 'metube_bbec_eqrn', 'metubepass89', 'metube_bbec') 
@@ -34,10 +34,20 @@ table, th, td {
             } 
         }
 
-        $query = "INSERT INTO keywordList VALUES ('$fileId', '$keyword')";
+
+        $query = "INSERT INTO commentThreads VALUES (NULL)";
         $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
 
-        header("Location: fileKeys.php?fileId=$fileId");
+        $query = "SELECT * from commentThreads ORDER BY commentThread DESC LIMIT 1";
+        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
+        $row = mysqli_fetch_assoc($result);
+        $threadId = $row["commentThread"];
+
+        $query = "INSERT INTO comment (thread, fileId, fromId, commentText, firstInThread)
+        VALUES ('$threadId', '$fileId', '$uId', '$commentText', 1)";
+        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
+
+        header("Location: viewFile.php?fileId=$fileId");
 
     ?>
 </html>

@@ -115,7 +115,8 @@ table, th, td {
         echo"<table class='table w-25'>\n
         <tr class='table-dark'>
             <th>Contact</th>
-            <th>View their uploads!</th>";
+            <th>View their uploads!</th>
+            <th>Remove Contact</th></tr>";
 
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             echo "\t<tr>\n";
@@ -125,6 +126,9 @@ table, th, td {
             echo"<td>";
             echo "<a href=contactUploads.php?id=$col_value class='btn btn-secondary'>View</a>";
             echo "</td>";
+            echo"<td>";
+            echo "<a href=checkRemoveContact.php?id=$col_value class='btn btn-secondary'>Remove</a>";
+            echo "</td>";
             echo "\t</tr>\n";
         }
         echo"</table>\n";
@@ -133,7 +137,6 @@ table, th, td {
     <FORM action="addContact.php" method="GET">
     <P>
         <INPUT type="submit" value="Add Contact" class="btn btn-info text-white">
-        <INPUT type="submit" value="Remove Contact" formaction="removeContact.php" class="btn btn-info text-white">
     </P>
     </FORM>
 

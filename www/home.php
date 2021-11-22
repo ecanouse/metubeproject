@@ -42,13 +42,18 @@ table, th, td {
             }
         }
 
-        $query = "SELECT * FROM filelocation ORDER BY fileid DESC";
+
+        //show by most views
+        $query = "SELECT userId, filelocation.fileId, displayName, fileUrl, fileDesc, category FROM filelocation 
+        INNER JOIN filedata ON filelocation.fileId = filedata.fileId ORDER BY numViews DESC LIMIT 5";
         $result = mysqli_query($link, $query) or die("Query error: ".mysqli_error($link)."\n");
 
         echo"<table class='table w-50'>\n
+        <tr class='table-secondary'>
+            <th>Most Viewed Uploads</th></tr>
         <tr class='table-dark'>
             <th>filename</th>
-            <th>filelink</th>
+            <th>preview</th>
             <th>description</th>
             <th>category</th>
             <th>View File</th></tr>";
@@ -72,6 +77,46 @@ table, th, td {
             echo "\t</tr>\n";
         }
         echo"</table>\n";
+
+
+
+        //show by recent upload
+        $query = "SELECT * FROM filelocation ORDER BY fileid DESC LIMIT 5";
+        $result = mysqli_query($link, $query) or die("Query error: ".mysqli_error($link)."\n");
+
+        echo"<table class='table w-50'>\n
+        <tr class='table-secondary'>
+            <th>Recent Uploads</th></tr>
+        <tr class='table-dark'>
+            <th>filename</th>
+            <th>preview</th>
+            <th>description</th>
+            <th>category</th>
+            <th>View File</th></tr>";
+
+        $fileId = 0;
+        while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            echo "\t<tr>\n";
+            foreach($line as $col_value){
+                if($line["fileId"] == $col_value){
+                    $fileId=$col_value;
+                }elseif($line["fileUrl"] == $col_value){
+                    echo"\t\t<td><iframe style='height:100px;width:100px;' src='$col_value'/></iframe></td>\n";
+                }elseif($line["userId"] != $col_value){
+                    echo"\t\t<td>$col_value</td>\n";
+                }
+            }
+
+            echo"<td>";
+            echo "<a href=viewFile.php?fileId=$fileId class='btn btn-secondary'>View File</a>";
+            echo "</td>";
+            echo "\t</tr>\n";
+        }
+        echo"</table>\n";
+
+
+
+
 
 ?>
 

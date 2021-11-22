@@ -13,6 +13,7 @@ table, th, td {
     session_start();
     $email = $_SESSION["email"];
     $fileId= $_GET["fileId"];
+    $_SESSION["file"] = $fileId;
 
     //connecting, selecting database
     $link = mysqli_connect('mysql1.cs.clemson.edu', 'metube_bbec_eqrn', 'metubepass89', 'metube_bbec') 
@@ -33,8 +34,12 @@ table, th, td {
             }
         }
 
+        $query = "UPDATE filedata SET numViews = numViews + 1 WHERE fileId='$fileId' LIMIT 1";
+        $result = mysqli_query($link, $query) or die("1Query error: ".mysqli_error($link)."\n");
+
         $query = "SELECT * FROM filelocation WHERE fileId='$fileId'";
-        $result = mysqli_query($link, $query) or die("Query error: ".mysqli_error($link)."\n");
+        $result = mysqli_query($link, $query) or die("2Query error: ".mysqli_error($link)."\n");
+        
 
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
@@ -44,7 +49,8 @@ table, th, td {
             <th>category</th>
             <th>download</th></tr>";
 
-        $fileId = 0;
+
+            // TODO fix this table too, description could be same as fileId or smth
         $filesrc = "";
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             echo "\t<tr>\n";
@@ -65,8 +71,71 @@ table, th, td {
         }
         echo"</table>\n";
 
+        //List comments
+        echo"<br><h3>Comments: </h3>";
+
+
+
+
+
+
+        $query = "SELECT fromId, commentText, firstInThread, comment.thread from comment 
+        INNER JOIN commentThreads ON comment.thread = commentThreads.commentThread
+        WHERE fileId = $fileId
+        ORDER BY timeSent DESC";
+        $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
+        if(mysqli_num_rows($result) == 0){
+            echo "This file does not have any comments.";
+        }  
+
+
+        echo"<table class='table w-50'>\n
+        <tr class='table-dark'>
+            <th>User</th>
+            <th>Comment</th>
+            <th>View Thread</th>
+            <th>Reply</th></tr>";
+
+            $thread = 0;
+            while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+                $thread = $line["thread"];
+                $fromId = $line["fromId"];
+                $comment = $line["commentText"];
+                echo "\t<tr>\n";
+                if($line["firstInThread"] == 0){
+                    echo "\t\t<td>$sub</td>\n";
+                }
+                echo "\t\t<td>$fromId</td>\n";
+                echo "\t\t<td>$comment</td>\n";
+    
+                echo"<td>";
+                echo "<a href=viewCommentThread.php?thread=$thread class='btn btn-secondary'>View</a>";
+                echo "</td>";
+                echo"<td>";
+                echo "<a href=replyToComment.php?thread=$thread class='btn btn-secondary'>Reply</a>";
+                echo "</td>";
+                echo "\t</tr>\n";
+            }
+            echo"</table>\n";
+
+
+
+
+
+
+
+
 ?>
 
+<FORM action="comment.php" method="get">
+    <P>
+        <div>
+        <label for="commentText" class="form-label">New Comment</label>
+            <textarea class="form-control w-25" id="commentText" name="commentText" rows="3"></textarea>
+        </div>
+        <INPUT type="submit" value="Comment">
+    </P>
+</FORM>
 
 
 <FORM action="userpage.php" method="get">
