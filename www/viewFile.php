@@ -9,23 +9,14 @@ table, th, td {
     border-collapse: collapse;
 }
 </style>
-<?php echo "Browse here! <br><br>"; 
+<?php  
     session_start();
     $email = $_SESSION["email"];
+    $fileId= $_GET["fileId"];
 
     //connecting, selecting database
     $link = mysqli_connect('mysql1.cs.clemson.edu', 'metube_bbec_eqrn', 'metubepass89', 'metube_bbec') 
     or die('Could not connect: ' . mysqli_error($link));
-
-
-    echo "<FORM action='search.php' method='get'>
-        <P>
-            <INPUT type='submit' value='Search by Keyword'>
-        </P>
-        </FORM>";
-
-
-
 
 
         $query = "SELECT * from user WHERE email = '$email'";
@@ -42,32 +33,33 @@ table, th, td {
             }
         }
 
-        $query = "SELECT * FROM filelocation ORDER BY fileid DESC";
+        $query = "SELECT * FROM filelocation WHERE fileId='$fileId'";
         $result = mysqli_query($link, $query) or die("Query error: ".mysqli_error($link)."\n");
 
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
             <th>filename</th>
-            <th>filelink</th>
+            <th>file</th>
             <th>description</th>
             <th>category</th>
-            <th>View File</th></tr>";
+            <th>download</th></tr>";
 
         $fileId = 0;
+        $filesrc = "";
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             echo "\t<tr>\n";
             foreach($line as $col_value){
                 if($line["fileId"] == $col_value){
                     $fileId=$col_value;
                 }elseif($line["fileUrl"] == $col_value){
-                    echo"\t\t<td><iframe style='height:100px;width:100px;' src='$col_value'/></iframe></td>\n";
+                    echo"\t\t<td><iframe style='height:500px;' src='$col_value'/></iframe></td>\n";
+                    $filesrc = $col_value;
                 }elseif($line["userId"] != $col_value){
                     echo"\t\t<td>$col_value</td>\n";
                 }
             }
-
             echo"<td>";
-            echo "<a href=viewFile.php?fileId=$fileId class='btn btn-secondary'>View File</a>";
+            echo "<a href=$filesrc download=$filesrc class='btn btn-secondary'>Download</a>";
             echo "</td>";
             echo "\t</tr>\n";
         }
@@ -75,24 +67,12 @@ table, th, td {
 
 ?>
 
-<FORM action='browseCategory.php' method='get'>
-    <P>
-    <LABEL for="category">Browse by Category: </LABEL>
-        <select class="form-select w-25" name="category" id="category">
-            <option value="humor">Humor</option>
-            <option value="educational">Educational</option>
-            <option value="entertainment">Entertainment</option>
-            <option value="news">News</option>
-            <option value="sports">Sports</option>
-        </select>   
-    <INPUT type="submit" value="Browse">
-    </P>
-</FORM>
 
 
 <FORM action="userpage.php" method="get">
     <P>
         <INPUT type="submit" value="Go to My Page">
+        <INPUT type="submit" value="Go to Metube Home" formaction="home.php">
     </P>
 </FORM>
 

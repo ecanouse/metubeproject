@@ -29,7 +29,7 @@
 
 
         if($uId != -1){
-            $query = "INSERT INTO filedata (numViews, numRatings, size) VALUES (0, 0, 1)";
+            $query = "INSERT INTO filedata (numViews, numRatings) VALUES (0, 0)";
             $result = mysqli_query($link, $query) or die("4Query error: " . mysqli_error($link)."\n");
             $query = "SELECT * from filedata ORDER BY timeUploaded DESC LIMIT 1";
             $result = mysqli_query($link, $query) or die("3Query error: " . mysqli_error($link)."\n");
