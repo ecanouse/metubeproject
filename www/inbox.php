@@ -61,21 +61,21 @@ table, th, td {
             <th>Message</th>
             <th>View Thread</th></tr>";
 
-
         $thread = 0;
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            $thread = $line["thread"];
+            $sub = $line["sub"];
+            $fromId = $line["fromId"];
+            $msg = $line["messageText"];
             echo "\t<tr>\n";
-            foreach($line as $col_value){
-                if($col_value == $line["sub"]){
-                    if($line["firstInThread"] == 0){
-                        echo"\t\t<td>'Re: '$col_value</td>\n";
-                    }
-                }elseif($col_value == $line["messages.thread"]){
-                    $thread = $col_value;
-                }else{
-                    echo"\t\t<td>$col_value</td>\n";
-                }
+            if($line["firstInThread"] == 0){
+                echo "\t\t<td>Re: $sub</td>\n";
+            }else{
+                echo "\t\t<td>$sub</td>\n";
             }
+            echo "\t\t<td>$fromId</td>\n";
+            echo "\t\t<td>$msg</td>\n";
+
             echo"<td>";
             echo "<a href=viewThread.php?thread=$thread class='btn btn-secondary'>View</a>";
             echo "</td>";
@@ -100,31 +100,31 @@ table, th, td {
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
             <th>Subject</th>
-            <th>From</th>
+            <th>To</th>
             <th>Message</th>
             <th>View Thread</th></tr>";
 
-
-        $thread = 0;
-        while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-            echo "\t<tr>\n";
-            foreach($line as $col_value){
-                if($col_value == $line["sub"]){
-                    if($line["firstInThread"] == 0){
-                        echo"\t\t<td>'Re: '$col_value</td>\n";
-                    }
-                }elseif($col_value == $line["messages.thread"]){
-                    $thread = $col_value;
+            $thread = 0;
+            while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+                $thread = $line["thread"];
+                $sub = $line["sub"];
+                $toId = $line["toId"];
+                $msg = $line["messageText"];
+                echo "\t<tr>\n";
+                if($line["firstInThread"] == 0){
+                    echo "\t\t<td>Re: $sub</td>\n";
                 }else{
-                    echo"\t\t<td>$col_value</td>\n";
+                    echo "\t\t<td>$sub</td>\n";
                 }
+                echo "\t\t<td>$toId</td>\n";
+                echo "\t\t<td>$msg</td>\n";
+    
+                echo"<td>";
+                echo "<a href=viewThread.php?thread=$thread class='btn btn-secondary'>View</a>";
+                echo "</td>";
+                echo "\t</tr>\n";
             }
-            echo"<td>";
-            echo "<a href=viewThread.php?thread=$thread class='btn btn-secondary'>View</a>";
-            echo "</td>";
-            echo "\t</tr>\n";
-        }
-        echo"</table>\n";
+            echo"</table>\n";
 
     ?>
 

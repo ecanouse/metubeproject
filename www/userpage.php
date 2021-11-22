@@ -53,7 +53,7 @@ table, th, td {
                 if($line["fileId"] == $col_value){
                     $fileId=$col_value;
                 }elseif($line["fileUrl"] == $col_value){
-                    echo"\t\t<td><img style='height:100px;width:100px;' src='$col_value'/></td>\n";
+                    echo"\t\t<td><iframe style='height:100px;width:100px;' src='$col_value'/></iframe></td>\n";
                 }elseif($line["userId"] != $col_value){
                     echo"\t\t<td>$col_value</td>\n";
                 }
