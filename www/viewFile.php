@@ -98,23 +98,23 @@ table, th, td {
 
             $thread = 0;
             while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                $thread = $line["thread"];
-                $fromId = $line["fromId"];
-                $comment = $line["commentText"];
-                echo "\t<tr>\n";
-                if($line["firstInThread"] == 0){
-                    echo "\t\t<td>$sub</td>\n";
+                if($line["firstInThread"] == 1){
+                    $thread = $line["thread"];
+                    $fromId = $line["fromId"];
+                    $comment = $line["commentText"];
+                    echo "\t<tr>\n";
+                    echo "\t\t<td>$fromId</td>\n";
+                    echo "\t\t<td>$comment</td>\n";
+        
+                    echo"<td>";
+                    echo "<a href=viewCommentThread.php?thread=$thread class='btn btn-secondary'>View</a>";
+                    echo "</td>";
+                    echo"<td>";
+                    echo "<a href=replyToComment.php?thread=$thread class='btn btn-secondary'>Reply</a>";
+                    echo "</td>";
+                    echo "\t</tr>\n";
                 }
-                echo "\t\t<td>$fromId</td>\n";
-                echo "\t\t<td>$comment</td>\n";
-    
-                echo"<td>";
-                echo "<a href=viewCommentThread.php?thread=$thread class='btn btn-secondary'>View</a>";
-                echo "</td>";
-                echo"<td>";
-                echo "<a href=replyToComment.php?thread=$thread class='btn btn-secondary'>Reply</a>";
-                echo "</td>";
-                echo "\t</tr>\n";
+
             }
             echo"</table>\n";
 

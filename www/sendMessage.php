@@ -41,27 +41,29 @@ table, th, td {
         $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){
             echo "The User that you want to send a message to does not exist.";
-            header("Location: messageUserError");
+            header("Location: messageUserError.php");
             //want to send them back to home page
         }else{
             while($row = mysqli_fetch_assoc($result)){
                 $cId = $row["userId"];
             } 
+            $query = "INSERT INTO messageThreads (sub) VALUES ('$sub')";
+            $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
+    
+            $query = "SELECT * from messageThreads WHERE sub = '$sub' ORDER BY thread DESC LIMIT 1";
+            $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
+            $row = mysqli_fetch_assoc($result);
+            $threadId = $row["thread"];
+    
+            $query = "INSERT INTO messages (thread, fromId, toId, messageText, firstInThread)
+            VALUES ('$threadId', '$uId', '$cId', '$messageText', 1)";
+            $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
+    
+            
+            header("Location: inbox.php");
         }
 
-        $query = "INSERT INTO messageThreads (sub) VALUES ('$sub')";
-        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
 
-        $query = "SELECT * from messageThreads WHERE sub = '$sub' ORDER BY thread DESC LIMIT 1";
-        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
-        $row = mysqli_fetch_assoc($result);
-        $threadId = $row["thread"];
-
-        $query = "INSERT INTO messages (thread, fromId, toId, messageText, firstInThread)
-        VALUES ('$threadId', '$uId', '$cId', '$messageText', 1)";
-        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
-
-        header("Location: inbox.php");
 
     ?>
 </html>
