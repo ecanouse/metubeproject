@@ -92,8 +92,12 @@
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             echo "\t<tr>\n";
             $fromId = $line["fromId"];
+            $query = "SELECT * from user WHERE userId=$uId LIMIT 1";
+            $res = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
+            $row = mysqli_fetch_array($res);
+            $femail = $row["email"];
             $txt = $line["commentText"];
-            echo "\t\t<td>$fromId</td>\n";
+            echo "\t\t<td>$femail</td>\n";
             echo "\t\t<td>$txt</td>\n";
 
 

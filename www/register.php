@@ -22,6 +22,10 @@
         <label for="pass" class="form-label">Password: </label>
         <input type="password" class="form-control w-25" id="pass" name="pass">
     </div>
+    <div class="mb-3">
+        <label for="passConf" class="form-label">Confirm Password: </label>
+        <input type="password" class="form-control w-25" id="passConf" name="passConf">
+    </div>
 
         <INPUT type="submit" value="Sign Up" class="btn btn-primary"> <INPUT type="reset" class="btn btn-primary">
     </P>

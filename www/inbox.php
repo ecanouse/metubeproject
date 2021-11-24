@@ -66,6 +66,10 @@ table, th, td {
             $thread = $line["thread"];
             $sub = $line["sub"];
             $fromId = $line["fromId"];
+            $query = "SELECT * from user WHERE userId=$uId LIMIT 1";
+            $res = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
+            $row = mysqli_fetch_array($res);
+            $femail = $row["email"];
             $msg = $line["messageText"];
             echo "\t<tr>\n";
             if($line["firstInThread"] == 0){
@@ -73,7 +77,7 @@ table, th, td {
             }else{
                 echo "\t\t<td>$sub</td>\n";
             }
-            echo "\t\t<td>$fromId</td>\n";
+            echo "\t\t<td>$femail</td>\n";
             echo "\t\t<td>$msg</td>\n";
 
             echo"<td>";
@@ -110,13 +114,19 @@ table, th, td {
                 $sub = $line["sub"];
                 $toId = $line["toId"];
                 $msg = $line["messageText"];
+
+                $query = "SELECT * from user WHERE userId=$toId LIMIT 1";
+                $res = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
+                $row = mysqli_fetch_array($res);
+                $temail = $row["email"];
+
                 echo "\t<tr>\n";
                 if($line["firstInThread"] == 0){
                     echo "\t\t<td>Re: $sub</td>\n";
                 }else{
                     echo "\t\t<td>$sub</td>\n";
                 }
-                echo "\t\t<td>$toId</td>\n";
+                echo "\t\t<td>$temail</td>\n";
                 echo "\t\t<td>$msg</td>\n";
     
                 echo"<td>";

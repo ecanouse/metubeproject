@@ -39,28 +39,60 @@ table, th, td {
         WHERE category = '$category'";            
         $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
 
+
+
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
             <th>File Name</th>
             <th>File URL</th>
             <th>Description</th>
-            <th>Category</th></tr>";
+            <th>Category</th>
+            <th>View File</th></tr>";
 
 
         $fileId = 0;
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            $fname = $line["displayName"];
+            $furl = $line["fileUrl"];
+            $desc = $line["fileDesc"];
+            $cat = $line["category"];
+            $fileId = $line["fileId"];
             echo "\t<tr>\n";
-            foreach($line as $col_value){
-                if($col_value == $line["fileId"]){
-                    $fileId=$col_value;
-                }else{
-                    echo"\t\t<td>$col_value</td>\n";
-                }
-            }
 
-            echo "\t</tr>\n";
+            echo"\t\t<td>$fname</td>\n";
+            echo"\t\t<td><iframe style='height:100px;width:100px;' src='$furl'/></iframe></td>\n";
+            echo"\t\t<td>$desc</td>\n";
+            echo"\t\t<td>$cat</td>\n";
+            echo"<td>";
+            echo "<a href=viewFile.php?fileId=$fileId class='btn btn-secondary'>View File</a>";
+            echo "</td>";
+
+
         }
         echo"</table>\n";
+
+        // echo"<table class='table w-50'>\n
+        // <tr class='table-dark'>
+        //     <th>File Name</th>
+        //     <th>File URL</th>
+        //     <th>Description</th>
+        //     <th>Category</th></tr>";
+
+
+        // $fileId = 0;
+        // while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+        //     echo "\t<tr>\n";
+        //     foreach($line as $col_value){
+        //         if($col_value == $line["fileId"]){
+        //             $fileId=$col_value;
+        //         }else{
+        //             echo"\t\t<td>$col_value</td>\n";
+        //         }
+        //     }
+
+        //     echo "\t</tr>\n";
+        // }
+        // echo"</table>\n";
 
 
     ?>

@@ -49,30 +49,69 @@ table, th, td {
         }    
 
 
+
+
+
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
-            <th>userid</th>
-            <th>fileid</th>
-            <th>filename</th>
-            <th>filelink</th>
-            <th>description</th>
-            <th>category</th>
-            <th>Add to a Playlist</th>";
+            <th>File Name</th>
+            <th>File</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>View File</th>
+            <th>Add to Playlist</th></tr>";
 
 
         $fileId = 0;
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-            $fileId=$line["fileId"];
+            $fname = $line["displayName"];
+            $furl = $line["fileUrl"];
+            $desc = $line["fileDesc"];
+            $cat = $line["category"];
+            $fileId = $line["fileId"];
             echo "\t<tr>\n";
-            foreach($line as $col_value){
-                echo"\t\t<td>$col_value</td>\n";
-            }
+
+            echo"\t\t<td>$fname</td>\n";
+            echo"\t\t<td><iframe style='height:100px;width:100px;' src='$furl'/></iframe></td>\n";
+            echo"\t\t<td>$desc</td>\n";
+            echo"\t\t<td>$cat</td>\n";
+
             echo"<td>";
-            echo "<a href=addFileToList.php?id=$fileId class='btn btn-secondary'>Add to Playlist</a>";
+            echo "<a href=viewFile.php?fileId=$fileId class='btn btn-secondary'>View File</a>";
+            echo "</td>";
+            echo"<td>";
+            echo "<a href=addFileToList.php?id=$fileId class='btn btn-secondary'>Add a Keyword</a>";
             echo "</td>";
             echo "\t</tr>\n";
         }
         echo"</table>\n";
+
+
+
+        // echo"<table class='table w-50'>\n
+        // <tr class='table-dark'>
+        //     <th>userid</th>
+        //     <th>fileid</th>
+        //     <th>filename</th>
+        //     <th>filelink</th>
+        //     <th>description</th>
+        //     <th>category</th>
+        //     <th>Add to a Playlist</th>";
+
+
+        // $fileId = 0;
+        // while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+        //     $fileId=$line["fileId"];
+        //     echo "\t<tr>\n";
+        //     foreach($line as $col_value){
+        //         echo"\t\t<td>$col_value</td>\n";
+        //     }
+        //     echo"<td>";
+        //     echo "<a href=addFileToList.php?id=$fileId class='btn btn-secondary'>Add to Playlist</a>";
+        //     echo "</td>";
+        //     echo "\t</tr>\n";
+        // }
+        // echo"</table>\n";
 
     ?>
 

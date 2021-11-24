@@ -44,6 +44,7 @@ table, th, td {
             <th>filelink</th>
             <th>description</th>
             <th>category</th>
+            <th>Add to Playlist</th>
             <th>Keywords</th></tr>";
 
         $fileId = 0;
@@ -61,6 +62,10 @@ table, th, td {
 
             echo"<td>";
             echo "<a href=fileKeys.php?fileId=$fileId class='btn btn-secondary'>View Keywords</a>";
+            echo "</td>";
+            
+            echo"<td>";
+            echo "<a href=addFileToList.php?id=$fileId class='btn btn-secondary'>Add to a Playlist</a>";
             echo "</td>";
             echo "\t</tr>\n";
         }
@@ -109,7 +114,8 @@ table, th, td {
             }
         }
 
-        $query = "SELECT contactId FROM contact WHERE userId='$uId'";
+        $query = "SELECT email, contactId FROM user INNER JOIN contact ON user.userId = contact.contactId 
+        WHERE contact.userId='$uId'";
         $result = mysqli_query($link, $query) or die("Query error: ".mysqli_error($link)."\n");
 
         echo"<table class='table w-25'>\n
@@ -119,15 +125,15 @@ table, th, td {
             <th>Remove Contact</th></tr>";
 
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            $email = $line["email"];
+            $cId = $line["contactId"];
             echo "\t<tr>\n";
-            foreach($line as $col_value){
-                echo"\t\t<td>$col_value</td>\n";
-            }
+            echo "\t\t<td>$email</td>\n";
             echo"<td>";
-            echo "<a href=contactUploads.php?id=$col_value class='btn btn-secondary'>View</a>";
+            echo "<a href=contactUploads.php?id=$cId class='btn btn-secondary'>View</a>";
             echo "</td>";
             echo"<td>";
-            echo "<a href=checkRemoveContact.php?id=$col_value class='btn btn-secondary'>Remove</a>";
+            echo "<a href=checkRemoveContact.php?id=$cId class='btn btn-secondary'>Remove</a>";
             echo "</td>";
             echo "\t</tr>\n";
         }

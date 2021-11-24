@@ -55,6 +55,7 @@
         }else{
             $cId=$row["fromId"];
         }
+        $_SESSION["cId"] = $cId;
         $query = "SELECT * from user WHERE userId = '$cId'";
         $result = mysqli_query($link, $query) or die("3Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){

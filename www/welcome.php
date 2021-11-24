@@ -8,6 +8,7 @@
     $lname = $_REQUEST["lastname"];
     $email = $_REQUEST["email"];
     $pass = $_REQUEST["pass"];
+    $passConf = $_REQUEST["passConf"];
 
     //connecting, selecting database
 
@@ -16,6 +17,10 @@
 
     if(strpos($email, '@') == false  || strpos($email, '.') ==  false){
         header('Location: emailInvalid.php');
+        exit;
+    }elseif(strcmp($pass, $passConf) != 0){
+        echo "Passwords do not match";
+        header('Location: passConfError.php');
         exit;
     }else{
         //add user to table

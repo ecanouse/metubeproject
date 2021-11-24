@@ -61,32 +61,45 @@ table, th, td {
         $query = "SELECT displayName, fileUrl, fileDesc, category, filelocation.fileId FROM filelocation INNER JOIN fileList ON filelocation.fileId = fileList.fileId WHERE playlistId = '$playlistId'";            
         $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
 
+
+        if(mysqli_num_rows($result) == 0){
+            echo "This file doesn't exist.";
+        } 
+
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
             <th>File Name</th>
             <th>File URL</th>
             <th>Description</th>
             <th>Category</th>
-            <th>Remove from List</tr>";
+            <th>View File</th>
+            <th>Remove From List</th></tr>";
 
 
         $fileId = 0;
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            $fname = $line["displayName"];
+            $furl = $line["fileUrl"];
+            $desc = $line["fileDesc"];
+            $cat = $line["category"];
+            $fileId = $line["fileId"];
             echo "\t<tr>\n";
-            foreach($line as $col_value){
-                if($col_value == $line["fileId"]){
-                    $fileId=$col_value;
-                }else{
-                    echo"\t\t<td>$col_value</td>\n";
-                }
-            }
+
+            echo"\t\t<td>$fname</td>\n";
+            echo"\t\t<td><iframe style='height:100px;width:100px;' src='$furl'/></iframe></td>\n";
+            echo"\t\t<td>$desc</td>\n";
+            echo"<td>";
+            echo "<a href=viewFile.php?fileId=$fileId class='btn btn-secondary'>View File</a>";
+            echo "</td>";
+            echo"\t\t<td>$cat</td>\n";
             echo"<td>";
             echo "<a href=removeFileFromList.php?id=$playlistId&fileId=$fileId class='btn btn-secondary'>Remove From Playlist</a>";
             echo "</td>";
-            echo "\t</tr>\n";
+
+
         }
         echo"</table>\n";
-
+        
     ?>
 
     <FORM action="userpage.php" method="get">

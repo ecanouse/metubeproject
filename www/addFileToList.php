@@ -34,34 +34,51 @@ table, th, td {
             } 
         }
 
-        $query = "SELECT * from filelocation WHERE fileId = '$fileId'";
-        $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
+   
+
+
+
+
+
+        $query = "SELECT displayName, fileUrl, fileDesc, category, fileId FROM filelocation WHERE fileId = '$fileId'";            
+        $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
         if(mysqli_num_rows($result) == 0){
             echo "This file doesn't exist.";
-        }    
+        } 
 
-        //give information about the file you are on
-        echo "<h2>File information</h2><br>";
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
-            <th>userid</th>
-            <th>fileid</th>
-            <th>filename</th>
-            <th>filelink</th>
-            <th>description</th>
-            <th>category</th>";
+            <th>File Name</th>
+            <th>File URL</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>View File</th></tr>";
 
 
+        $fileId = 0;
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            $fname = $line["displayName"];
+            $furl = $line["fileUrl"];
+            $desc = $line["fileDesc"];
+            $cat = $line["category"];
+            $fileId = $line["fileId"];
             echo "\t<tr>\n";
-            foreach($line as $col_value){
-                echo"\t\t<td>$col_value</td>\n";
-            }
 
-            echo "\t</tr>\n";
+            echo"\t\t<td>$fname</td>\n";
+            echo"\t\t<td><iframe style='height:100px;width:100px;' src='$furl'/></iframe></td>\n";
+            echo"\t\t<td>$desc</td>\n";
+            echo"\t\t<td>$cat</td>\n";
+            echo"<td>";
+            echo "<a href=viewFile.php?fileId=$fileId class='btn btn-secondary'>View File</a>";
+            echo "</td>";
+
+
+
         }
         echo"</table>\n";
 
+
+   
         echo "My Playlists<br>";
         //List all playlists that the user has
 

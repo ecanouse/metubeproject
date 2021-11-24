@@ -46,6 +46,7 @@ table, th, td {
         }else{
             $cId=$row["fromId"];
         }
+        $cId = $_SESSION["cId"];
 
         $query = "INSERT INTO messages (thread, fromId, toId, messageText, firstInThread)
         VALUES ('$threadId', '$uId', '$cId', '$messageText', 0)";

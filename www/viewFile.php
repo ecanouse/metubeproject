@@ -37,39 +37,49 @@ table, th, td {
         $query = "UPDATE filedata SET numViews = numViews + 1 WHERE fileId='$fileId' LIMIT 1";
         $result = mysqli_query($link, $query) or die("1Query error: ".mysqli_error($link)."\n");
 
-        $query = "SELECT * FROM filelocation WHERE fileId='$fileId'";
-        $result = mysqli_query($link, $query) or die("2Query error: ".mysqli_error($link)."\n");
-        
+
+
+        $query = "SELECT displayName, fileUrl, fileDesc, category, fileId FROM filelocation WHERE fileId = '$fileId'";            
+        $result = mysqli_query($link, $query) or die("1Query error: " . mysqli_error($link)."\n");
 
         echo"<table class='table w-50'>\n
         <tr class='table-dark'>
-            <th>filename</th>
-            <th>file</th>
-            <th>description</th>
-            <th>category</th>
-            <th>download</th></tr>";
+            <th>File Name</th>
+            <th>File URL</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Add to a Playlist</th>
+            <th>Download</th></tr>";
 
 
-            // TODO fix this table too, description could be same as fileId or smth
-        $filesrc = "";
+        $fileId = 0;
         while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+            $fname = $line["displayName"];
+            $furl = $line["fileUrl"];
+            $desc = $line["fileDesc"];
+            $cat = $line["category"];
+            $fileId = $line["fileId"];
             echo "\t<tr>\n";
-            foreach($line as $col_value){
-                if($line["fileId"] == $col_value){
-                    $fileId=$col_value;
-                }elseif($line["fileUrl"] == $col_value){
-                    echo"\t\t<td><iframe style='height:500px;' src='$col_value'/></iframe></td>\n";
-                    $filesrc = $col_value;
-                }elseif($line["userId"] != $col_value){
-                    echo"\t\t<td>$col_value</td>\n";
-                }
-            }
+
+            echo"\t\t<td>$fname</td>\n";
+            echo"\t\t<td><iframe style='height:100px;width:100px;' src='$furl'/></iframe></td>\n";
+            echo"\t\t<td>$desc</td>\n";
+            echo"\t\t<td>$cat</td>\n";
+
+
             echo"<td>";
-            echo "<a href=$filesrc download=$filesrc class='btn btn-secondary'>Download</a>";
+            echo "<a href=addFileToList.php?id=$fileId class='btn btn-secondary'>Add to Playlist</a>";
+            echo "</td>";
+            echo"<td>";
+            echo "<a href=$furl download=$furl class='btn btn-secondary'>Download</a>";
             echo "</td>";
             echo "\t</tr>\n";
         }
         echo"</table>\n";
+
+
+      
+
 
         //List comments
         echo"<br><h3>Comments: </h3>";
@@ -101,9 +111,13 @@ table, th, td {
                 if($line["firstInThread"] == 1){
                     $thread = $line["thread"];
                     $fromId = $line["fromId"];
+                    $query = "SELECT * from user WHERE userId=$uId LIMIT 1";
+                    $res = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
+                    $row = mysqli_fetch_array($res);
+                    $femail = $row["email"];
                     $comment = $line["commentText"];
                     echo "\t<tr>\n";
-                    echo "\t\t<td>$fromId</td>\n";
+                    echo "\t\t<td>$femail</td>\n";
                     echo "\t\t<td>$comment</td>\n";
         
                     echo"<td>";
