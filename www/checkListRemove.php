@@ -27,6 +27,7 @@ table, th, td {
         $result = mysqli_query($link, $query) or die("2Query error: " . mysqli_error($link)."\n");
 
         header("Location: userPlaylists.php");
+        mysqli_close($link);
 
         ?>
 

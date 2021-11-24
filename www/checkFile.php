@@ -56,6 +56,8 @@
         }else{
             echo "Error Uploading File";
         }
+        mysqli_close($link);
+
 
     ?>
 <FORM action="userpage.php" method="GET">

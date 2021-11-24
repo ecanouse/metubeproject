@@ -31,6 +31,7 @@ table, th, td {
                 $uId = $row["userId"];
             } 
         }
+        mysqli_close($link);
 
     ?>
 

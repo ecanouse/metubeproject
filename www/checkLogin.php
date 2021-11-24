@@ -27,6 +27,7 @@
                 header("Location: userpage.php");
             }
         }
+        mysqli_close($link);
 
     ?>
 

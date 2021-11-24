@@ -71,6 +71,8 @@ table, th, td {
             echo"\t</tr>\n";
         }
         echo "</table>";
+        mysqli_close($link);
+
 ?>
 <FORM action="addPlaylist.php" method="get">
     <P>

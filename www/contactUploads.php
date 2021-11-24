@@ -88,30 +88,8 @@ table, th, td {
 
 
 
-        // echo"<table class='table w-50'>\n
-        // <tr class='table-dark'>
-        //     <th>userid</th>
-        //     <th>fileid</th>
-        //     <th>filename</th>
-        //     <th>filelink</th>
-        //     <th>description</th>
-        //     <th>category</th>
-        //     <th>Add to a Playlist</th>";
+        mysqli_close($link);
 
-
-        // $fileId = 0;
-        // while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-        //     $fileId=$line["fileId"];
-        //     echo "\t<tr>\n";
-        //     foreach($line as $col_value){
-        //         echo"\t\t<td>$col_value</td>\n";
-        //     }
-        //     echo"<td>";
-        //     echo "<a href=addFileToList.php?id=$fileId class='btn btn-secondary'>Add to Playlist</a>";
-        //     echo "</td>";
-        //     echo "\t</tr>\n";
-        // }
-        // echo"</table>\n";
 
     ?>
 

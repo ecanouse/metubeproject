@@ -71,6 +71,8 @@ table, th, td {
         }
         echo"</table>\n";
 
+        mysqli_close($link);
+
     ?>
 
 
@@ -138,6 +140,8 @@ table, th, td {
             echo "\t</tr>\n";
         }
         echo"</table>\n";
+
+        mysqli_close($link);
 
     ?>
     <FORM action="addContact.php" method="GET">

@@ -85,6 +85,8 @@ table, th, td {
             echo "\t</tr>\n";
         }
         echo"</table>\n";
+        mysqli_close($link);
+
 
     ?>
 

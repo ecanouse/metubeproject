@@ -53,6 +53,7 @@
 
     $query = "INSERT INTO playlist (userId, listName, playlistDesc) VALUES ('$uId', 'Favorites', 'Keep your favorite Files Here!')";
     $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
+    mysqli_close($link);
 
 
 ?>

@@ -71,28 +71,7 @@ table, th, td {
         }
         echo"</table>\n";
 
-        // echo"<table class='table w-50'>\n
-        // <tr class='table-dark'>
-        //     <th>File Name</th>
-        //     <th>File URL</th>
-        //     <th>Description</th>
-        //     <th>Category</th></tr>";
-
-
-        // $fileId = 0;
-        // while($line = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-        //     echo "\t<tr>\n";
-        //     foreach($line as $col_value){
-        //         if($col_value == $line["fileId"]){
-        //             $fileId=$col_value;
-        //         }else{
-        //             echo"\t\t<td>$col_value</td>\n";
-        //         }
-        //     }
-
-        //     echo "\t</tr>\n";
-        // }
-        // echo"</table>\n";
+        mysqli_close($link);
 
 
     ?>

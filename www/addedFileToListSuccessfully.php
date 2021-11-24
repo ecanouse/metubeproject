@@ -99,7 +99,7 @@ table, th, td {
 
         }
         echo"</table>\n";
-        
+        mysqli_close($link);
     ?>
 
     <FORM action="userpage.php" method="get">

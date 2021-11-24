@@ -48,6 +48,7 @@ table, th, td {
         $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
 
         header("Location: viewFile.php?fileId=$fileId");
+        mysqli_close($link);
 
     ?>
 </html>

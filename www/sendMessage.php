@@ -63,6 +63,7 @@ table, th, td {
             header("Location: inbox.php");
         }
 
+        mysqli_close($link);
 
 
     ?>

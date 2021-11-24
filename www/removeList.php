@@ -47,6 +47,7 @@ table, th, td {
                 </P>
             </FORM>";
 
+            mysqli_close($link);
 
 
     ?>

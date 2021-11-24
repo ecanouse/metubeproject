@@ -134,6 +134,7 @@ table, th, td {
 
 
 
+            mysqli_close($link);
 
 
 

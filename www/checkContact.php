@@ -49,6 +49,9 @@
             echo "Error adding contact";
         }
 
+        mysqli_close($link);
+
+
     ?>
 <FORM action="userpage.php" method="GET">
     <P>

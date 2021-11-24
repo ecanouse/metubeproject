@@ -107,6 +107,7 @@
 
         echo "<a href=viewFile.php?fileId=$fileId class='btn btn-secondary'>Go Back to File</a>";
 
+        mysqli_close($link);
 
 
     ?>

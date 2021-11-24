@@ -39,6 +39,8 @@
         }
         echo "Information changed Successfully!";
     }
+    mysqli_close($link);
+
 
 ?>
 <FORM action="userpage.php" method="GET">

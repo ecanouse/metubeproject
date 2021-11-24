@@ -18,6 +18,7 @@
         $result = mysqli_query($link, $query) or die("Query error: " . mysqli_error($link)."\n");
 
         header("Location: addedFileToListSuccessfully.php?id=$playlistId&fileId=$fileId");
+        mysqli_close($link);
 
     ?>
 

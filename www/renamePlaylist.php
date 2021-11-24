@@ -34,6 +34,7 @@
         echo "Error Changing Playlist Name";
     }
 
+    mysqli_close($link);
 
 ?>
 <FORM action="userpage.php" method="GET">
